@@ -15,10 +15,11 @@ const UsuarioSchema= new Schema({
         unique: true, 
         validate: 
         {
-        validator: function(v) {
+            validator: function(v) 
+            {
              return cpf.isValid(v);
             }, 
-          message: props=> `${props.value} não é um cpf válido`
+            message: props=> `${props.value} não é um cpf válido`
         },
     },
     email:
@@ -27,18 +28,21 @@ const UsuarioSchema= new Schema({
         required: true, 
         min: 4, 
         unique: true, 
-        validate:{
-        validator : function(v) {
-            return v.match('@');
+        validate:
+        {
+            validator : function(v) 
+                {
+                    return v.match('@');
+                },
+            message: props => `${props.value} não é um email válido`,
         },
-        message: props => `${props.value} não é um email válido`,
-    },
-},  senha:
-{
-    type: String, 
-    required: true, 
-    select: false,
-}
+    },  
+    senha:
+        {
+            type: String, 
+            required: true, 
+            select: false,
+        }
 
 });
 
