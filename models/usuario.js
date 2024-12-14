@@ -12,6 +12,18 @@ const DepositoSchema = new Schema({
         required: true,
     },
 });
+const SaqueSchema = new Schema({
+    valor: {
+        type: Number,
+        required: true,
+        min: 1,
+    },
+    data: {
+        type: Date,
+        required: true,
+    },
+
+});
 const UsuarioSchema= new Schema({
     nome:
     {
@@ -55,6 +67,7 @@ const UsuarioSchema= new Schema({
             select: false,
         },
         depositos:[DepositoSchema],
+        saques:[SaqueSchema],
 
 });
 

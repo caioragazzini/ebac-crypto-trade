@@ -1,5 +1,5 @@
 const express = require('express');
-const { criarUsuario } = require('../../services');
+const { criarUsuario, checaSaldo } = require('../../services');
 const { logger } = require('../../utils');
 const passport = require('passport');
 
@@ -25,10 +25,11 @@ router.post('/', async(req,res)=> {
     }
 });
 
-router.get('/me', passport.authenticate('jwt', {session:false}), (req, res)=> {
+router.get('/me', passport.authenticate('jwt', {session:false}), async(req, res)=> {
     res.json({
         sucesso: true,
         usuario: req.user,
+        saldo: await checaSaldo(req.user),
     })
 });
 
