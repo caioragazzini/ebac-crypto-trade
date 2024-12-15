@@ -12,30 +12,28 @@ router.get('/', async(req,res)=>{
     });
 });
 
-router.post('/', async(req,res)=>{
+router.post('/', async (req, res) => {
     const usuario = req.user;
-    try{
+    try {
         const valor = req.body.valor;
-        usuario.depositos.push({valor: valor, data: new Date()});
+
+        usuario.depositos.push({ valor: valor, data: new Date() });
         await usuario.save();
 
         res.json({
             sucesso: true,
-            saldo: await checaSaldo(req.user),
+            saldo: await checaSaldo(usuario),
             depositos: usuario.depositos,
         });
-
-    }catch(e){
-        logger.error(`Erro no deposito: ${e.message}`);
+    } catch (e) {
+        logger.error(`Erro no depósito: ${e.message}`);
 
         res.status(422).json({
             sucesso: false,
             erro: e.message,
         });
-
-
     }
-
 });
+
 
 module.exports = router;

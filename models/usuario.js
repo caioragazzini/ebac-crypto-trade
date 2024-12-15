@@ -11,6 +11,10 @@ const DepositoSchema = new Schema({
         type: Date,
         required: true,
     },
+    cancelado: {
+        type: Boolean,
+        default: false,
+    },
 });
 const SaqueSchema = new Schema({
     valor: {
