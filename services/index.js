@@ -4,4 +4,5 @@ module.exports = {
     logaUsuario: require('./loga-usuario'),
     checaSaldo: require('./checa-saldo'),
     cancelarDeposito: require('./cancela-deposito'),
+    buscaCotacoes: require('./busca-cotacoes'),
 };
