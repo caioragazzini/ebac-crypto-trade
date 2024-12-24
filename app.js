@@ -6,9 +6,13 @@ const passport = require('passport');
 
 const { logger } = require('./utils');
 const { connect } = require('./models');
+const { agendaTarefas } = require('./workers');
 const router = require('./routes');
 
 const app = express();
+
+// inicializa tarefas
+agendaTarefas();
 
 // configurando autenticação
 app.use(passport.initialize());
