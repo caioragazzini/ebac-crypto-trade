@@ -2,18 +2,27 @@ const { Cotacao } = require('../models');
 const { buscaCotacoesOnline } = require('../services');
 const { logger } = require('../utils');
 
-var cotacoesWorker = async(_job, done) => {
-    logger.info('Buscando Cotações...');
+var cotacoesWorker = async(job, done) => {
 
-    const cotacoes = await buscaCotacoesOnline();
+    try{
+        logger.info(`Buscando Cotações...Tentativa ${job.attemptsMade + 1 } / ${job.opts.attempts}`);
 
-    logger.info('Cotações requisitadas com sucesso...');
+        const cotacoes = await buscaCotacoesOnline();
 
-    await Cotacao.insertMany(cotacoes);
+        logger.info('Cotações requisitadas com sucesso...');
 
-    logger.info('Cotações inseridas no banco!');
+        await Cotacao.insertMany(cotacoes);
 
-    done();
+        logger.info('Cotações inseridas no banco!');
+
+        done();
+
+    }catch(err){
+        logger.error(`Erro ao processar o job ${err.message}`);
+        done(err);
+    }
+    
+    
 
 };
 
