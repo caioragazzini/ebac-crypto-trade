@@ -16,7 +16,7 @@ const agendaTarefas = async () => {
     }
 
     cotacaoQueue.add({}, {
-        repeat: { cron: '*/1 * * * *' },  // Executa a cada minuto para teste
+        repeat: { cron: '*/15 * * * *' }, 
         attempts: 3,
         backoff: 5000,
     });
@@ -30,7 +30,7 @@ const agendaRanking = async () => {
     }
 
     rankingQueue.add({}, {
-        repeat: { cron: '*/1 * * * *' },  // Executa a cada minuto para teste
+        repeat: { cron: '59 23 * * *' },  
         attempts: 3,
         backoff: 5000,
     });
