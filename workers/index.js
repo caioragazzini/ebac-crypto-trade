@@ -5,11 +5,11 @@ const saldoWorker =  require('./saldo');
 
 const cotacaoQueue = new Queue('busca-cotacoes', process.env.REDIS_URL);
 const rankingQueue = new Queue('calculo-ranking', process.env.REDIS_URL);
-const saldoQueue = new Queue('saldo', process.env.REDIS_URL);
+const aumentaSaldoQueue = new Queue('saldo', process.env.REDIS_URL);
 
 cotacaoQueue.process(cotacoesWorker);
 rankingQueue.process(rankingWorker);
-saldoQueue.process(saldoWorker);
+aumentaSaldoQueue.process(saldoWorker);
 
 
 const agendaTarefas = async () => {
@@ -24,6 +24,12 @@ const agendaTarefas = async () => {
         attempts: 3,
         backoff: 5000,
     });
+
+    aumentaSaldoQueue.add({},{
+        repeat: { cron: '0 0 * * *' }, 
+        attempts: 3,
+        backoff: 5000,
+    })
 };
 
 const agendaRanking = async () => {
@@ -41,7 +47,7 @@ const agendaRanking = async () => {
 };
 
 const saldoTarefas = async () => {
-    const saldoAgendados = await saldoQueue.getRepeatableJobs();
+    const saldoAgendados = await aumentaSaldoQueue.getRepeatableJobs();
 
     for (const jobDeBusca of saldoAgendados) {
         await cotacaoQueue.removeRepeatableByKey(jobDeBusca.key);

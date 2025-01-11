@@ -18,6 +18,15 @@ router.post('/', async (req, res) => {
         const valor = req.body.valor;
 
         usuario.depositos.push({ valor: valor, data: new Date() });
+
+        const saldoEmMoedas = usuarios.moedas.find(m => m.codigo === 'BRL' );
+        if(saldoEmMoedas){
+            saldoEmMoedas.quantidade += valor;
+        }else{
+            usuario.moedas.push({ codigo: 'BRL', quantidade: valor});
+        }
+
+
         await usuario.save();
 
         res.json({
