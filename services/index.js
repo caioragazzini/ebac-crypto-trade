@@ -11,5 +11,6 @@ module.exports = {
     buscaCotacoesNoBanco: require('./busca-cotacoes').buscaCotacoesNoBanco,
     calculaRankingDiario: require('./busca-ranking').calculaRankingDiario,
     buscaRankingNoBanco: require('./busca-ranking').buscaRankingNoBanco,
+    buscaRankingUsuarios: require('./busca-ranking-usuarios').buscaRankingUsuarios,
    
 };

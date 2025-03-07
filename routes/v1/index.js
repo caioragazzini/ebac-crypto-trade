@@ -12,6 +12,8 @@ const cotacoesRouter = require('./cotacoes');
 const buscaRankingRouter = require('./ranking');
 const trocasRouter = require('./trocas');
 const relatorioRouter = require('./relatorio');
+const rankingUsuariosRouter = require('./ranking-usuarios.js');
+
 
 
 const router = express.Router();
@@ -26,5 +28,6 @@ router.use('/trocas', passport.authenticate('jwt', {session: false}), trocasRout
 router.use('/depositos', passport.authenticate('jwt', {session: false}), depositosRouter);
 router.use('/saques', passport.authenticate('jwt', {session: false}), saquesRouter);
 router.use('/cancelar', passport.authenticate('jwt', {session: false}), cancelarDepositosRouter);
+router.use('/ranking-usuarios', rankingUsuariosRouter);
 
 module.exports = router;

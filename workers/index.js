@@ -1,16 +1,18 @@
 const Queue = require('bull');
 const rankingWorker = require('./ranking');
 const cotacoesWorker = require('./cotacoes');
-const saldoWorker =  require('./saldo');
+const saldoWorker = require('./saldo');
+const rankingUsuariosWorker = require('./ranking-usuarios-worker');
 
 const cotacaoQueue = new Queue('busca-cotacoes', process.env.REDIS_URL);
 const rankingQueue = new Queue('calculo-ranking', process.env.REDIS_URL);
 const aumentaSaldoQueue = new Queue('saldo', process.env.REDIS_URL);
+const rankingUsuariosQueue = new Queue('ranking-usuarios', process.env.REDIS_URL);
 
 cotacaoQueue.process(cotacoesWorker);
 rankingQueue.process(rankingWorker);
 aumentaSaldoQueue.process(saldoWorker);
-
+rankingUsuariosQueue.process(rankingUsuariosWorker);
 
 const agendaTarefas = async () => {
     const cotacaoAgendadas = await cotacaoQueue.getRepeatableJobs();
@@ -25,11 +27,11 @@ const agendaTarefas = async () => {
         backoff: 5000,
     });
 
-    aumentaSaldoQueue.add({},{
+    aumentaSaldoQueue.add({}, {
         repeat: { cron: '0 0 * * *' }, 
         attempts: 3,
         backoff: 5000,
-    })
+    });
 };
 
 const agendaRanking = async () => {
@@ -44,16 +46,22 @@ const agendaRanking = async () => {
         attempts: 3,
         backoff: 5000,
     });
+
+    rankingUsuariosQueue.add({}, { 
+        repeat: { cron: '*/2 * * * *' },
+        attempts: 3,
+        backoff: 5000,
+    });
 };
 
 const saldoTarefas = async () => {
     const saldoAgendados = await aumentaSaldoQueue.getRepeatableJobs();
 
     for (const jobDeBusca of saldoAgendados) {
-        await cotacaoQueue.removeRepeatableByKey(jobDeBusca.key);
+        await aumentaSaldoQueue.removeRepeatableByKey(jobDeBusca.key);
     }
 
-    cotacaoQueue.add({}, {
+    aumentaSaldoQueue.add({}, {
         repeat: { cron: '0 0 * * *' }, 
         attempts: 3,
         backoff: 5000,
@@ -64,5 +72,4 @@ module.exports = {
     agendaTarefas,
     agendaRanking,
     saldoTarefas,
-    
 };
