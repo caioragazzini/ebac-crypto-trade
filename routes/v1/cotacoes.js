@@ -6,6 +6,19 @@ const { logger } = require('../../utils');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /v1/cotacoes:
+ *   get:
+ *     description: Retorna a última cotação válida
+ *     tags:
+ *       - operações
+ *     responses:
+ *       200:
+ *         description: Recebe uma lista de cotações
+ */
+
+
 router.get('/', async (req,res)=>{
     try{
         const cotacoes = await buscaCotacoesNoBanco();

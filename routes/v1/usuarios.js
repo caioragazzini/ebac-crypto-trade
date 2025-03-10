@@ -25,6 +25,22 @@ router.post('/', async(req,res)=> {
     }
 });
 
+/**
+ * @openapi
+ * /v1/usuarios/me:
+ *   get:
+ *     description: Retorna o perfil do usuário(a)
+ *     security:
+ *       - auth: []
+ *     tags:
+ *       - usuario
+ *     responses:
+ *       200:
+ *         description: Informações do perfil do usuário(a)
+ *       401:
+ *         description: Autorização está faltando ou inválida
+ */
+
 router.get('/me', passport.authenticate('jwt', {session:false}), async(req, res)=> {
     res.json({
         sucesso: true,
