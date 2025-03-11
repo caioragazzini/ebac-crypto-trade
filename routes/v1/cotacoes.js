@@ -16,8 +16,36 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Recebe uma lista de cotações
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sucesso:
+ *                   type: boolean
+ *                   example: true
+ *                 cotacoes:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Cotação'
+ * components:
+ *   schemas:
+ *     Cotação:
+ *       type: object
+ *       properties:
+ *         data:
+ *           type: dateTime
+ *           example: 2025-03-07T21:45:01.152Z
+ *         moeda:
+ *           type: string
+ *           example: "USD"
+ *         valor:
+ *           type: number
+ *           example: 5.25
+ *         id:
+ *           type: string
+ *           example: 67cb68dd843502e0058031e2
  */
-
 
 router.get('/', async (req,res)=>{
     try{

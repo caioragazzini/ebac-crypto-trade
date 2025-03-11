@@ -17,6 +17,30 @@ const swaggerBase= {
             }
 
         }
+    },
+    schemas:{
+        'Cotação': {
+            type: 'object',
+            properties:{
+                moeda:{
+                    type:'string',
+                    exemple:'ETH',
+                },
+                data:{
+                    type: 'datetime',
+                    exemple:'2025-03-07T21:45:01.152Z',
+                },
+                id:{
+                    type: 'string',
+                    exemple: '67cb68dd843502e0058031e3'
+                },
+                valor: {
+                    type: 'number',
+                    exemple:'500146.65366733563'
+                }
+            }
+        }
+        
     }
 
 };
