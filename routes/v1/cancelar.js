@@ -9,8 +9,10 @@ const router = express.Router();
  * /v1/cancelar/{id}:
  *   patch:
  *     description: Cancela um depósito existente pelo ID
+ *     security:
+ *       - auth: []
  *     tags:
- *       - depósitos
+ *       - cancelar
  *     parameters:
  *       - in: path
  *         name: id

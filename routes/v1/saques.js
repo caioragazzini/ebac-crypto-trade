@@ -105,6 +105,8 @@ router.post('/', async (req, res) => {
  * /v1/saques/{codigo}:
  *   post:
  *     description: Realiza um saque de criptomoeda
+ *     security:
+ *       - auth: []
  *     tags:
  *       - saques
  *     parameters:
@@ -129,6 +131,21 @@ router.post('/', async (req, res) => {
  *         description: Saque de criptomoeda realizado com sucesso
  *       422:
  *         description: Erro no saque de criptomoeda
+ * components:
+ *   schemas:
+ *     Saque:
+ *       type: object
+ *       properties:
+ *         valor:
+ *           type: number
+ *           example: 10
+ *         data:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-12-14T12:16:42.095Z"
+ *         _id:
+ *           type: string
+ *           example: "675d772aecb16593a8cbf534"
  */
 router.post('/:codigo', async(req, res) => {
     const usuario = req.user;

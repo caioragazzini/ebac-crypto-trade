@@ -6,13 +6,38 @@ const { logger } = require('../../utils');
 
 const router = express.Router();
 
+
+
+router.get('/', async (req,res)=>{
+    try{
+        const cotacoes = await buscaCotacoesNoBanco();
+        res.json({
+            sucesso: true,
+            cotacoes,    
+        });
+
+    }catch(e){
+        logger.error(`Erro ao buscar as cotações: ${e.message}`);
+
+        res.status(500).json({
+            sucesso: false,
+            erro: e.message,
+        });
+
+    }
+    
+    
+});
+
+module.exports = router;
+
 /**
  * @openapi
  * /v1/cotacoes:
  *   get:
  *     description: Retorna a última cotação válida
  *     tags:
- *       - operações
+ *       - cotacoes
  *     responses:
  *       200:
  *         description: Recebe uma lista de cotações
@@ -46,26 +71,3 @@ const router = express.Router();
  *           type: string
  *           example: 67cb68dd843502e0058031e2
  */
-
-router.get('/', async (req,res)=>{
-    try{
-        const cotacoes = await buscaCotacoesNoBanco();
-        res.json({
-            sucesso: true,
-            cotacoes,    
-        });
-
-    }catch(e){
-        logger.error(`Erro ao buscar as cotações: ${e.message}`);
-
-        res.status(500).json({
-            sucesso: false,
-            erro: e.message,
-        });
-
-    }
-    
-    
-});
-
-module.exports = router;

@@ -105,7 +105,26 @@ router.post('/', async (req, res) => {
  *                   example: 1000.50
  *       401:
  *         description: Autorização está faltando ou inválida
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           example: "caioragazzini@gmail.com.br"
+ *         cpf:
+ *           type: string
+ *           example: "146.897.780-60"
+ *         nome:
+ *           type: string
+ *           example: "João"
+ *         senha:
+ *           type: string
+ *           example: "1234@ebac"
  */
+
+
 router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => {
     res.json({
         sucesso: true,

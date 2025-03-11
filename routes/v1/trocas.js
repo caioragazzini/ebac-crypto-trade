@@ -9,10 +9,10 @@ const router = express.Router();
  * /v1/troca-moedas:
  *   post:
  *     description: Realiza a troca de moedas para um usuário autenticado.
- *     tags:
- *       - transações
  *     security:
  *       - BearerAuth: []
+ *     tags:
+ *       - troca de moeda
  *     requestBody:
  *       required: true
  *       content:
@@ -78,6 +78,7 @@ const router = express.Router();
  *                   type: string
  *                   example: "Erro inesperado no servidor."
  */
+
 
 router.post('/', async(req,res)=>{
     try{

@@ -11,6 +11,48 @@ function parseDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
+
+router.get('/', async (req, res) => {
+    try {
+        let dia;
+        const diaStr = req.query.dia; 
+
+        if (diaStr) {
+           
+            const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (regex.test(diaStr)) {
+                dia = parseDate(diaStr);
+            } else {
+                return res.status(400).json({
+                    sucesso: false,
+                    erro: 'Formato de data inválido. Use o formato dd/mm/yyyy.'
+                });
+            }
+        } else {
+           
+            dia = new Date(); 
+        }
+
+        const ranking = await buscaRankingNoBanco(dia);
+
+        console.log("🚀 ~ router.get ~ ranking:", ranking)
+
+        res.json({
+            sucesso: true,
+            ranking: ranking[0], 
+        });
+    } catch (e) {
+        logger.error(`Erro ao buscar o ranking: ${e.message}`);
+        
+        res.status(500).json({
+            sucesso: false,
+            erro: e.message,
+        });
+    }
+});
+
+module.exports = router;
+
 /**
  * @openapi
  * /v1/ranking:
@@ -112,45 +154,26 @@ function parseDate(dateStr) {
  *                 erro:
  *                   type: string
  *                   example: "Erro inesperado no servidor."
+ * components:
+ *   schemas:
+ *     Ranking:
+ *       type: object
+ *       properties:
+ *         sucesso:
+ *           type: boolean
+ *           example: true
+ *         ranking:
+ *           type: object
+ *           properties:
+ *             dia:
+ *               type: string
+ *               format: date-time
+ *               example: "2025-03-04T18:38:48.938Z"
+ *             gainers:
+ *               type: array
+ *               description: Usuários com maior ganho no dia.              
+ *             loosers:
+ *               type: array
+ *               description: Usuários com maior perda no dia.
  */
 
-router.get('/', async (req, res) => {
-    try {
-        let dia;
-        const diaStr = req.query.dia; 
-
-        if (diaStr) {
-           
-            const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-            if (regex.test(diaStr)) {
-                dia = parseDate(diaStr);
-            } else {
-                return res.status(400).json({
-                    sucesso: false,
-                    erro: 'Formato de data inválido. Use o formato dd/mm/yyyy.'
-                });
-            }
-        } else {
-           
-            dia = new Date(); 
-        }
-
-        const ranking = await buscaRankingNoBanco(dia);
-
-        console.log("🚀 ~ router.get ~ ranking:", ranking)
-
-        res.json({
-            sucesso: true,
-            ranking: ranking[0], 
-        });
-    } catch (e) {
-        logger.error(`Erro ao buscar o ranking: ${e.message}`);
-        
-        res.status(500).json({
-            sucesso: false,
-            erro: e.message,
-        });
-    }
-});
-
-module.exports = router;

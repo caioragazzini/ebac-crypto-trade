@@ -7,6 +7,8 @@ const router = express.Router();
  * /v1/status:
  *   get:
  *     description: Rota de checagem de status
+ *     tags:
+ *       - status
  *     responses:
  *       200:
  *         description: A API está funcional e tudo certo

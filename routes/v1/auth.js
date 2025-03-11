@@ -11,7 +11,7 @@ const router = express.Router();
  *   post:
  *     description: Rota que autentica o usuário
  *     tags:
- *       - auth
+ *       - autenticação
  *     requestBody:
  *       description: Suas informações de login
  *       required: true
