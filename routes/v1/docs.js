@@ -39,10 +39,42 @@ const swaggerBase= {
                     exemple:'500146.65366733563'
                 }
             }
-        }
-        
+        }, 'Deposito': {
+            type: 'object',
+            properties: {
+                valor: { 
+                    type: 'number', 
+                    example: 300 },
+                data: {
+                     type: 'string', 
+                     format: 'date-time', 
+                     example: '2024-12-11T21:14:25.127Z' },
+                cancelado: { 
+                    type: 'boolean', 
+                    example: false },
+                _id: { 
+                    type: 'string', 
+                    xample: '675a00b15a7665f715197081' }
+            }
+        },'Saque': {
+            type: 'object',
+            properties: {
+                valor: {
+                    type: 'number',
+                    example: 10
+                },
+                data: {
+                    type: 'string',
+                    format: 'date-time',
+                    example: '2024-12-14T12:16:42.095Z'
+                },
+                _id: {
+                    type: 'string',
+                    example: '675d772aecb16593a8cbf534'
+                }
+            }
+        },
     }
-
 };
 
 const opcoes= {
