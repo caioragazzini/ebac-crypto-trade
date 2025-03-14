@@ -2,6 +2,7 @@ const express = require('express');
 
 const { logger } = require('../../utils');
 const { logaUsuario } = require('../../services');
+const e = require('express');
 
 const router = express.Router();
 
@@ -42,13 +43,25 @@ router.post('/', async(req, res)=>{
             jwt: jwt,
         });
 
-    }catch(err){
+    }catch(e){
         logger.error(`Erro na autenticação: ${e.message}`);
-        res.status(401).json({
-            sucesso: false,
-            erro: 'Email ou senhas invalidos'
 
-        })
+        if (e.message.match('confirmado')) {
+
+            res.status(401).json({
+                sucesso: false,
+                erro: e.message,
+    
+            });
+        } else {
+
+            res.status(401).json({
+                sucesso: false,
+                erro: 'Email ou senhas invalidos'
+    
+            });
+        }
+       
     }
 });
 

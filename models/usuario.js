@@ -85,9 +85,21 @@ const UsuarioSchema= new Schema({
             required: true, 
             select: false,
         },
-        depositos:[DepositoSchema],
-        saques:[SaqueSchema],
-        moedas:[MoedasSchema],
+
+    confirmado:{
+        type: Boolean,
+        default: false,
+    },
+    tokenDeConfirmacao:{
+        type: String,
+        unique:true,
+        sparse: true,
+        select: false,
+    },
+    
+    depositos:[DepositoSchema],
+    saques:[SaqueSchema],
+    moedas:[MoedasSchema],
 
 });
 
