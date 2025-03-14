@@ -1,0 +1,14 @@
+Confirme seu e-mail
+
+Olá,
+
+Clique no link abaixo para confirmar seu e-mail e ativar sua conta:
+
+{{confirmation_link}}
+
+Se não puder clicar, copie e cole no seu navegador.
+
+Se você não solicitou este e-mail, ignore esta mensagem.
+
+Atenciosamente,  
+Equipe EBAC Crypto Trade

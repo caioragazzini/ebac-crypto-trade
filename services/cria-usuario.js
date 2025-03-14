@@ -2,8 +2,8 @@ const {Usuario} = require('../models');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
-//TODO
-// const { enviaEmailDeConfirmacao} = require('.envia-email');
+
+const { enviaEmailDeConfirmacao} = require('./envia-email');
 
 const criarUsuario = async(usuario, urlDeRedirecionamento) => {
     if(!usuario.senha){
@@ -18,8 +18,8 @@ const criarUsuario = async(usuario, urlDeRedirecionamento) => {
     usuario.tokenDeConfirmacao = crypto.randomBytes(32).toString('hex');
     const {senha, ...usuarioSalvo} = (await Usuario.create(usuario))._doc;
 
-    //TODO
-    //await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
+   
+    await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
 
     return usuarioSalvo;
 
