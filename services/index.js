@@ -13,6 +13,7 @@ module.exports = {
     buscaRankingNoBanco: require('./busca-ranking').buscaRankingNoBanco,
     buscaRankingUsuarios: require('./busca-ranking-usuarios').buscaRankingUsuarios,
     enviaEmailDeConfirmacao: require('./envia-email').enviaEmailDeConfirmacao,
+    enviaEmailDeRecuperacao: require('./envia-email').enviaEmailDeRecuperacao,
     confirmaConta: require('./confirma-conta'),
    
 };

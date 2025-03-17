@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { logger } = require('../../utils');
-const { logaUsuario, confirmaConta } = require('../../services');
+const { logaUsuario, confirmaConta, enviaEmailDeRecuperacao } = require('../../services');
 
 
 const router = express.Router();
@@ -52,6 +52,28 @@ router.get('/confirma-conta', async(req,res) =>{
             erro: e.message,
         })
     }
+});
+
+router.get('/pede-recuperacao', async(req,res)=>{
+    try{
+        const { email, redirect } = req.query;
+
+        await enviaEmailDeRecuperacao(email, redirect);
+        res.status(200).json({
+            sucesso: true,
+            messagem: 'Se voce possui um cadastro você receberá o email',
+        });
+
+    } catch(e){
+        logger.error(`Erro no envio da recuperação de senha: ${e.message}`),
+
+        res.json(422).json({
+            sucesso:false,
+            erro: e.message
+        });
+
+    }
+
 });
 
 module.exports = router;
