@@ -19,6 +19,8 @@ router.post('/', async (req, res) => {
         const valor = req.body.valor;
 
         usuario.depositos.push({ valor: valor, data: new Date() });
+        console.log("🚀 ~ router.post ~ usuario:", usuario)
+        
 
         const saldoEmMoedas = usuario.moedas.find(m => m.codigo === 'BRL');
         if (saldoEmMoedas) {

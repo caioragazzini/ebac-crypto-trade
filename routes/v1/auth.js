@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { logger } = require('../../utils');
-const { logaUsuario, confirmaConta, enviaEmailDeRecuperacao } = require('../../services');
+const { logaUsuario, confirmaConta, enviaEmailDeRecuperacao, validaTokenAlteracaoDeSenha } = require('../../services');
 
 
 const router = express.Router();
@@ -75,5 +75,25 @@ router.get('/pede-recuperacao', async(req,res)=>{
     }
 
 });
+
+router.get('valida-token', async(req,res)=>{
+    try{
+        const { token, redirect }= req.query;
+
+        const jwt = await validaTokenAlteracaoDeSenha(token);
+
+        res.redirect(`${redirect}?jwt=${jwt}`);
+
+    } catch(e)
+    {
+        logger.error(`Erro no validação do token de recuperação de senha: ${e.message}`),
+
+        res.json(422).json({
+            sucesso:false,
+            erro: e.message
+        });
+
+    }
+})
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const { logger } = require('../../utils');
-const { checaSaldo, sacaCrypto } = require('../../services');
+const { checaSaldo, sacaCrypto, calculaLucro } = require('../../services');
 
 const router = express.Router();
 
@@ -39,6 +39,8 @@ const router = express.Router();
  *                         example: "675d772aecb16593a8cbf534"
  */
 router.get('/', async(req, res) => {
+    const usuariosComLucro = await calculaLucro();
+    console.log('xxxxxxxxxxxxxxxxxx', usuariosComLucro);
     res.json({
         sucesso: true,
         saques: req.user.saques,
