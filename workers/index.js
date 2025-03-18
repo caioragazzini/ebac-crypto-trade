@@ -74,13 +74,15 @@ const saldoTarefas = async () => {
 
 const agendaLucroUsuarios = async () => {
     const jobsAgendados = await lucroUsuariosQueue.getRepeatableJobs();
+    console.log("🚀 ~ agendaLucroUsuarios%%%$#%¨¨&&&** ~ jobsAgendados:", jobsAgendados)
+
 
     for (const job of jobsAgendados) {
         await lucroUsuariosQueue.removeRepeatableByKey(job.key);
     }
 
     lucroUsuariosQueue.add({}, {
-        repeat: { cron: '0 8 * * *' }, 
+        repeat: { cron: '*/1 * * * *' }, 
         attempts: 3,
         backoff: 5000,
     });

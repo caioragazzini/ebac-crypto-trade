@@ -1,5 +1,6 @@
 const { logger } = require('../utils');
 const { enviaEmailDeParabens } = require('../services/envia-email')
+const { calculaLucro } = require('../services/calcula-lucro');
 
 var lucroUsuarioWorker = async(job, done) => {
 
