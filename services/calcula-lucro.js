@@ -2,12 +2,14 @@ const { Usuario, Cotacao } = require('../models');
 
 async function calculaLucro() {
   const usuarios = await Usuario.find().populate('depositos saques moedas');
+  console.log("🚀 ~ calculaLucro ~ usuarios:---------------------------------------", usuarios)
   const cotacoes = await Cotacao.find();
 
   const cotacoesMap = cotacoes.reduce((acc, cotacao) => {
     acc[cotacao.moeda] = cotacao.valor;
     return acc;
   }, {});
+  console.log("🚀 ~ cotacoesMap ~ cotacoesMap:", cotacoesMap)
 
   const usuariosComLucro = [];
 
@@ -23,7 +25,7 @@ async function calculaLucro() {
     const totalMoedas = usuario.moedas.reduce((acc, moeda) => {
       let cotacao = cotacoesMap[moeda.codigo];
       if (moeda.codigo === 'BRL') {
-        cotacao = 1; // Trata BRL como valor fixo 1
+        cotacao = 1; 
       }
       if (cotacao) {
         const valorMoeda = moeda.quantidade * cotacao;
@@ -38,8 +40,8 @@ async function calculaLucro() {
 
     console.log(`Usuário: ${usuario.nome}, Lucro: R$${lucroTotal.toFixed(2)}`);
 
-    if (lucroTotal > 1) {
-      usuariosComLucro.push({ nome: usuario.nome, lucro: lucroTotal });
+    if (lucroTotal > 1000) {
+      usuariosComLucro.push({ nome: usuario.nome, lucro: lucroTotal , email: usuario.email});
     }
   }
 

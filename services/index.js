@@ -14,6 +14,7 @@ module.exports = {
     buscaRankingUsuarios: require('./busca-ranking-usuarios').buscaRankingUsuarios,
     enviaEmailDeConfirmacao: require('./envia-email').enviaEmailDeConfirmacao,
     enviaEmailDeRecuperacao: require('./envia-email').enviaEmailDeRecuperacao,
+    enviaEmailDeParabens: require('./envia-email').enviaEmailDeParabens,
     confirmaConta: require('./confirma-conta'),
     validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
     calculaLucro: require('./calcula-lucro').calculaLucro,

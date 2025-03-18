@@ -1,6 +1,6 @@
 const express = require('express');
 const { logger } = require('../../utils');
-const { checaSaldo, sacaCrypto, calculaLucro } = require('../../services');
+const { enviaEmailDeParabens, calculaLucro } = require('../../services');
 
 const router = express.Router();
 
@@ -40,7 +40,16 @@ const router = express.Router();
  */
 router.get('/', async(req, res) => {
     const usuariosComLucro = await calculaLucro();
-    console.log('xxxxxxxxxxxxxxxxxx', usuariosComLucro);
+
+    for (const usuario of usuariosComLucro) {
+        try {
+            await enviaEmailDeParabens(usuario.email);
+            logger.info(`E-mail enviado para ${usuario.email}`);
+        } catch (error) {
+            logger.error(`Erro ao enviar e-mail para ${usuario.email}: ${error.message}`);
+        }
+    }
+    console.log('usuariosComLucro', usuariosComLucro);
     res.json({
         sucesso: true,
         saques: req.user.saques,

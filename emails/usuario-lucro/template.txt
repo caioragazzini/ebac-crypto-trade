@@ -1,0 +1,9 @@
+Parabéns
+
+Olá <%= nome%>,
+
+Parabéns você está lucrando muito com a Crypto Trade!!!!
+
+
+Atenciosamente,  
+Equipe EBAC Crypto Trade

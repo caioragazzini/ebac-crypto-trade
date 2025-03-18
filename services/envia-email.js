@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const enviaEmailDeConfirmacao= async (usuario, urlDeRedirecionamento) => {
-    const paramentros ={
+    const parametros ={
         nome: usuario.nome,
         linkDeConfirmacao: `${process.env.URL_DA_CRYPTOTRADE}/V1/auth/confirma-conta?token=${usuario.tokenDeConfirmacao}&redirect=${urlDeRedirecionamento}`
     };
@@ -60,9 +60,24 @@ const enviaEmailDeRecuperacao = async(email, urlDeRedirecionamento) =>{
 }
 
 
+const enviaEmailDeParabens= async (usuario) => {
+    const parametros ={
+        nome: usuario.nome,
+        
+    };
+    await transporter.sendMail({
+        from: '"CryptoTrade" <noreply@cryptotrade.com.br> ',
+        to: usuario.email,
+        subject: 'Parabéns você está lucrando!!!',
+        text: await ejs.renderFile('emails/usuario-lucro/template.txt', parametros) ,
+        html: await ejs.renderFile('emails/usuario-lucro/template.html', parametros),
+    })
+};
+
 
 module.exports = { 
     transporter,
     enviaEmailDeConfirmacao, 
     enviaEmailDeRecuperacao,
+    enviaEmailDeParabens,
 };
