@@ -3,7 +3,7 @@ const { Usuario } = require("../models");
 const bcrypt = require('bcrypt');
 
 const logaUsuario = async(email, senha)=>{
-    console.log(" ~ logaUsuario ~ logaUsuario:", logaUsuario)
+    
     if(!email || !senha){
         throw new Error('Campo senha e email são obrigatorios')
     }

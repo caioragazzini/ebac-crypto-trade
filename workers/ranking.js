@@ -15,7 +15,7 @@ const rankingWorker = async (job, done) => {
 
     logger.info('Ranking requisitados com sucesso...');
 
-    console.log("🚀 ~ rankingWorker ~ rankingComDia:", rankingComDia);
+  
    
     await RankingDiario.create(rankingComDia);
 

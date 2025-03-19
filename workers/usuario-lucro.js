@@ -12,10 +12,10 @@ var lucroUsuarioWorker = async(job, done) => {
 
         for (const usuario of usuariosComLucro) {
             try {
-                await enviaEmailDeParabens(usuario.email);
-                logger.info(`E-mail enviado para ${usuario.email}`);
+                await enviaEmailDeParabens(usuario);
+                logger.info(`E-mail enviado para ${usuario}`);
             } catch (error) {
-                logger.error(`Erro ao enviar e-mail para ${usuario.email}: ${error.message}`);
+                logger.error(`Erro ao enviar e-mail para ${usuario}: ${error.message}`);
             }
         }
 

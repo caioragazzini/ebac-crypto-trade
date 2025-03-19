@@ -60,18 +60,32 @@ const enviaEmailDeRecuperacao = async(email, urlDeRedirecionamento) =>{
 }
 
 
-const enviaEmailDeParabens= async (usuario) => {
-    const parametros ={
-        nome: usuario.nome,
-        
-    };
-    await transporter.sendMail({
-        from: '"CryptoTrade" <noreply@cryptotrade.com.br> ',
-        to: usuario.email,
-        subject: 'Parabéns você está lucrando!!!',
-        text: await ejs.renderFile('emails/usuario-lucro/template.txt', parametros) ,
-        html: await ejs.renderFile('emails/usuario-lucro/template.html', parametros),
-    })
+const enviaEmailDeParabens = async (usuario) => {
+    if (!usuario || !usuario.email) {
+        console.error("❌ Erro: Usuário inválido ou sem e-mail definido.", usuario);
+        return;
+    }
+
+    const parametros = { nome: usuario.nome };
+
+    console.log("🚀 Enviando e-mail para:", usuario.email);
+
+    try {
+        const text = await ejs.renderFile('emails/usuario-lucro/template.txt', parametros);
+        const html = await ejs.renderFile('emails/usuario-lucro/template.html', parametros);
+
+        await transporter.sendMail({
+            from: '"CryptoTrade" <noreply@cryptotrade.com.br>',
+            to: usuario.email,
+            subject: 'Parabéns, você está lucrando!!!',
+            text: text,
+            html: html,
+        });
+
+        console.log(`✅ E-mail enviado com sucesso para ${usuario.email}`);
+    } catch (error) {
+        console.error(`❌ Erro ao enviar e-mail para ${usuario.email}:`, error.message);
+    }
 };
 
 

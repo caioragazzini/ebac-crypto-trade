@@ -20,8 +20,7 @@ const rankingUsuariosWorker = async (job, done) => {
     };
 
     logger.info('✅ Ranking de usuários requisitado com sucesso!');
-    console.log("🚀 ~ rankingUsuariosWorker ~ rankingComDia:", rankingComDia);
-
+    
     await TopClients.create(rankingComDia);
 
     logger.info('✅ Ranking de usuários inserido no banco com sucesso!');

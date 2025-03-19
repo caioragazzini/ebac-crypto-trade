@@ -35,8 +35,7 @@ router.get('/', async (req, res) => {
 
         const ranking = await buscaRankingNoBanco(dia);
 
-        console.log("🚀 ~ router.get ~ ranking:", ranking)
-
+       
         res.json({
             sucesso: true,
             ranking: ranking[0], 

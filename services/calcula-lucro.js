@@ -2,7 +2,7 @@ const { Usuario, Cotacao } = require('../models');
 
 async function calculaLucro() {
   const usuarios = await Usuario.find().populate('depositos saques moedas');
-  console.log("🚀 ~ calculaLucro ~ usuarios:---------------------------------------", usuarios)
+
   const cotacoes = await Cotacao.find();
 
   const cotacoesMap = cotacoes.reduce((acc, cotacao) => {

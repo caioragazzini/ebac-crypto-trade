@@ -5,9 +5,7 @@ const buscaRankingUsuarios = async (dia) => {
     try {
         const inicioDoDia = new Date(dia.setHours(0, 0, 0, 0));
         const fimDoDia = new Date(dia.setHours(23, 59, 59, 999));
-
-        console.log(`Buscando ranking para o dia: ${inicioDoDia}`);
-
+      
         return await TopClients.aggregate([
             {
                 "$match": {

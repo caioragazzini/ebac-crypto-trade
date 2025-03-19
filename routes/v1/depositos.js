@@ -4,8 +4,6 @@ const { logger } = require('../../utils');
 
 const router = express.Router();
 
-
-
 router.get('/', async (req, res) => {
     res.json({
         sucesso: true,
@@ -14,22 +12,31 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const usuario = req.user;
     try {
+        const usuario = req.user;
         const valor = req.body.valor;
 
+        // Adiciona o depósito ao histórico do usuário
         usuario.depositos.push({ valor: valor, data: new Date() });
-        console.log("🚀 ~ router.post ~ usuario:", usuario)
-        
 
+        // Verifica se o usuário já tem a moeda BRL
         const saldoEmMoedas = usuario.moedas.find(m => m.codigo === 'BRL');
+
         if (saldoEmMoedas) {
-            saldoEmMoedas.quantidade += valor;
+            // Incrementa o saldo se a moeda já existir
+            await usuario.updateOne(
+                { "moedas.codigo": "BRL" }, 
+                { $inc: { "moedas.$.quantidade": valor } }
+            );
         } else {
-            usuario.moedas.push({ codigo: 'BRL', quantidade: valor });
+            // Adiciona a moeda BRL se não existir
+            await usuario.updateOne(
+                {}, 
+                { $push: { moedas: { codigo: 'BRL', quantidade: valor } } }
+            );
         }
 
-        await usuario.save();
+        await usuario.save(); // Salva alterações no histórico de depósitos
 
         res.json({
             sucesso: true,
@@ -47,6 +54,7 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 /**
