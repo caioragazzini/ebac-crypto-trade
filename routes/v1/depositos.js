@@ -1,17 +1,18 @@
 const express = require('express');
 const { checaSaldo } = require('../../services');
 const { logger } = require('../../utils');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', checaOtp, async (req, res) => {
     res.json({
         sucesso: true,
         depositos: req.user.depositos,
     });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', checaOtp, async (req, res) => {
     try {
         const usuario = req.user;
         const valor = req.body.valor;
@@ -64,6 +65,7 @@ module.exports = router;
  *     description: Retorna a lista de depósitos do usuário
  *     security:
  *       - auth: []
+ *          otp: []
  *     tags:
  *       - depósitos
  *     responses:
@@ -85,6 +87,7 @@ module.exports = router;
  *     description: Realiza um novo depósito para o usuário
  *     security:
  *       - auth: []
+ *         otp: []
  *     tags:
  *       - depósitos
  *     requestBody:
