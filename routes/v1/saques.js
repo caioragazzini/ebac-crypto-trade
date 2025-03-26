@@ -1,6 +1,7 @@
 const express = require('express');
 const { logger } = require('../../utils');
-const { enviaEmailDeParabens, calculaLucro } = require('../../services');
+const { enviaEmailDeParabens, calculaLucro, checaSaldo, sacaCrypto } = require('../../services');
+const { checaOtp } = require('./auth/otp');
 
 const router = express.Router();
 
@@ -79,7 +80,7 @@ router.get('/', async(req, res) => {
  *       422:
  *         description: Saldo insuficiente ou erro no saque
  */
-router.post('/', async (req, res) => {
+router.post('/', checaOtp, async (req, res) => {
     const usuario = req.user;
     try {
         const valor = req.body.valor;
