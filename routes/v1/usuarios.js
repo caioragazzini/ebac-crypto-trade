@@ -1,5 +1,5 @@
 const express = require('express');
-const { criarUsuario, checaSaldo } = require('../../services');
+const { criarUsuario, checaSaldo, geraSegredo } = require('../../services');
 const { logger } = require('../../utils');
 const passport = require('passport');
 const bycrypt = require('bcrypt');
@@ -168,5 +168,31 @@ router.get('/me',
         saldo: await checaSaldo(req.user),
     });
 });
+
+router.post('/otp',
+    passport.authenticate('jwt', { session: false }), 
+    async(req,res) => {
+        const usuario = req.user;
+        try{
+
+            const {segredo, qrcode } = geraSegredo(usuario.email);
+           
+            usuario.segredoOtp = segredo;
+
+            await usuario.save();
+
+            console.log("🚀 ~ AAAAAAA~ qrcode:", qrcode)
+            return res.send(qrcode);
+
+        } catch(e){
+            logger.error(`Erro ma geração do segredo do TOTP ${e.message}`);
+
+            return res.status(500).json({
+                sucesso: false,
+                erro: e.message,
+            });
+
+        }
+    });
 
 module.exports = router;

@@ -18,5 +18,7 @@ module.exports = {
     confirmaConta: require('./confirma-conta'),
     validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
     calculaLucro: require('./calcula-lucro').calculaLucro,
+    geraSegredo: require('./otp').geraSegredo,
+    validaOtp: require('./otp').validaOtp,
    
 };

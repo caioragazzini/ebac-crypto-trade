@@ -104,6 +104,12 @@ const UsuarioSchema= new Schema({
         select: false,
     },
     
+    segredoOtp: {
+        type: String,
+        unique: true,
+        sparse: true,
+        select: false,
+    },
     depositos:[DepositoSchema],
     saques:[SaqueSchema],
     moedas:[MoedasSchema],
