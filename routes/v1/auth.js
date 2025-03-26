@@ -97,3 +97,104 @@ router.get('valida-token', async(req,res)=>{
 })
 
 module.exports = router;
+
+/**
+ * @openapi
+ * /v1/auth:
+ *   post:
+ *     description: Autentica um usuário e retorna um token JWT
+ *     tags:
+ *       - autenticacao
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "usuario@email.com"
+ *               senha:
+ *                 type: string
+ *                 example: "senha123"
+ *     responses:
+ *       200:
+ *         description: Autenticação bem-sucedida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sucesso:
+ *                   type: boolean
+ *                   example: true
+ *                 jwt:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       401:
+ *         description: Credenciais inválidas ou conta não confirmada
+ * /v1/auth/confirma-conta:
+ *   get:
+ *     description: Confirma a conta de um usuário
+ *     tags:
+ *       - autenticacao
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: redirect
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       302:
+ *         description: Conta confirmada, redirecionamento efetuado
+ *       422:
+ *         description: Erro ao confirmar conta
+ * /v1/auth/pede-recuperacao:
+ *   get:
+ *     description: Solicita recuperação de senha
+ *     tags:
+ *       - autenticacao
+ *     parameters:
+ *       - name: email
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: redirect
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Email de recuperação enviado
+ *       422:
+ *         description: Erro ao enviar recuperação de senha
+ * /v1/auth/valida-token:
+ *   get:
+ *     description: Valida token de recuperação de senha e redireciona com JWT
+ *     tags:
+ *       - autenticacao
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: redirect
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       302:
+ *         description: Token válido, redirecionamento efetuado
+ *       422:
+ *         description: Erro ao validar token de recuperação de senha
+ */

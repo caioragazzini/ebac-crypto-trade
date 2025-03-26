@@ -15,129 +15,116 @@ const swaggerBase = {
                 scheme: 'bearer',
                 bearerFormat: 'JWT',
             },
+            otp: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'totp',
+            },
         },
     },
-    schemas: {
-        'Cotação': {
-            type: 'object',
-            properties: {
-                moeda: {
-                    type: 'string',
-                    example: 'ETH',
-                },
-                data: {
-                    type: 'string',
-                    format: 'date-time',
-                    example: '2025-03-07T21:45:01.152Z',
-                },
-                id: {
-                    type: 'string',
-                    example: '67cb68dd843502e0058031e3',
-                },
-                valor: {
-                    type: 'number',
-                    example: 500146.65366733563,
-                },
-            },
-        },
-        'Deposito': {
-            type: 'object',
-            properties: {
-                valor: {
-                    type: 'number',
-                    example: 300,
-                },
-                data: {
-                    type: 'string',
-                    format: 'date-time',
-                    example: '2024-12-11T21:14:25.127Z',
-                },
-                cancelado: {
-                    type: 'boolean',
-                    example: false,
-                },
-                _id: {
-                    type: 'string',
-                    example: '675a00b15a7665f715197081',
-                },
-            },
-        },
-        'Saque': {
-            type: 'object',
-            properties: {
-                valor: {
-                    type: 'number',
-                    example: 10,
-                },
-                data: {
-                    type: 'string',
-                    format: 'date-time',
-                    example: '2024-12-14T12:16:42.095Z',
-                },
-                _id: {
-                    type: 'string',
-                    example: '675d772aecb16593a8cbf534',
-                },
-            },
-        },
-        'CancelarDepositoResponse': {
-            type: 'object',
-            properties: {
-                sucesso: {
-                    type: 'boolean',
-                    example: true,
-                },
-                mensagem: {
-                    type: 'string',
-                    example: 'Depósito cancelado com sucesso',
-                },
-                deposito: {
-                    type: 'object',
-                    properties: {
-                        valor: {
-                            type: 'number',
-                            example: 300,
-                        },
-                        data: {
-                            type: 'string',
-                            format: 'date-time',
-                            example: '2024-12-14T11:53:41.821Z',
-                        },
-                        cancelado: {
-                            type: 'boolean',
-                            example: true,
+    paths: {
+        '/v1/saques': {
+            post: {
+                description: 'Realiza um saque em BRL',
+                security: [
+                    { auth: [] },
+                    { otp: [] },
+                ],
+                tags: ['saques'],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    valor: {
+                                        type: 'number',
+                                        example: 3000,
+                                    },
+                                },
+                            },
                         },
                     },
                 },
+                responses: {
+                    200: { description: 'Saque realizado com sucesso' },
+                    422: { description: 'Saldo insuficiente ou erro no saque' },
+                },
             },
         },
-        'Usuario': {
-            type: 'object',
-            properties: {
-                email: {
-                    type: 'string',
-                    example: 'caioragazzini@gmail.com.br',
+        '/v1/auth': {
+            post: {
+                description: 'Autentica um usuário e retorna um token JWT',
+                tags: ['autenticação'],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    email: { type: 'string', example: 'user@example.com' },
+                                    senha: { type: 'string', example: 'senha123' },
+                                },
+                            },
+                        },
+                    },
                 },
-                cpf: {
-                    type: 'string',
-                    example: '146.897.780-60',
-                },
-                nome: {
-                    type: 'string',
-                    example: 'João',
-                },
-                senha: {
-                    type: 'string',
-                    example: '1234@ebac',
+                responses: {
+                    200: { description: 'Login bem-sucedido, retorna um JWT' },
+                    401: { description: 'Credenciais inválidas ou conta não confirmada' },
                 },
             },
-        }        
+        },
+        '/v1/auth/confirma-conta': {
+            get: {
+                description: 'Confirma a conta do usuário através do token enviado por e-mail',
+                tags: ['autenticação'],
+                parameters: [
+                    { name: 'token', in: 'query', required: true, schema: { type: 'string' } },
+                    { name: 'redirect', in: 'query', required: true, schema: { type: 'string' } },
+                ],
+                responses: {
+                    302: { description: 'Redireciona para a URL fornecida' },
+                    422: { description: 'Token inválido ou expirado' },
+                },
+            },
+        },
+        '/v1/auth/pede-recuperacao': {
+            get: {
+                description: 'Solicita a recuperação de senha e envia um e-mail com o link',
+                tags: ['autenticação'],
+                parameters: [
+                    { name: 'email', in: 'query', required: true, schema: { type: 'string' } },
+                    { name: 'redirect', in: 'query', required: true, schema: { type: 'string' } },
+                ],
+                responses: {
+                    200: { description: 'E-mail de recuperação enviado com sucesso' },
+                    422: { description: 'Erro no envio do e-mail' },
+                },
+            },
+        },
+        '/v1/auth/valida-token': {
+            get: {
+                description: 'Valida o token de recuperação de senha e retorna um novo JWT',
+                tags: ['autenticação'],
+                parameters: [
+                    { name: 'token', in: 'query', required: true, schema: { type: 'string' } },
+                    { name: 'redirect', in: 'query', required: true, schema: { type: 'string' } },
+                ],
+                responses: {
+                    302: { description: 'Redireciona para a URL com o novo JWT' },
+                    422: { description: 'Token inválido ou expirado' },
+                },
+            },
+        },
     },
 };
 
 const opcoes = {
     definition: swaggerBase,
-    apis: ['./routes/v1/*.js'],  // Certifique-se de que as rotas estão no caminho correto e com as anotações Swagger
+    apis: ['./routes/v1/*.js'],
 };
 
 module.exports = swaggerJSDoc(opcoes);

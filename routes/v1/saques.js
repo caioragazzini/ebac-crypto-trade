@@ -62,6 +62,9 @@ router.get('/', async(req, res) => {
  * /v1/saques:
  *   post:
  *     description: Realiza um saque em BRL
+ *     security:
+ *       - auth: []
+ *         otp: []
  *     tags:
  *       - saques
  *     requestBody:

@@ -168,7 +168,39 @@ router.get('/me',
         saldo: await checaSaldo(req.user),
     });
 });
-
+/**
+* @openapi
+* /v1/usuarios/otp:
+*   post:
+*     description: Gera um segredo TOTP e retorna um QR Code para autenticação de dois fatores (2FA)
+*     security:
+*       - auth: []
+*     tags:
+*       - usuario
+*     responses:
+*       200:
+*         description: QR Code para configuração do TOTP
+*         content:
+*           application/json:
+*             schema:
+*               type: string
+*               example: "data:image/png;base64,iVBORw0KG..."
+*       401:
+*         description: Autorização está faltando ou inválida
+*       500:
+*         description: Erro interno ao gerar o segredo TOTP
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 sucesso:
+*                   type: boolean
+*                   example: false
+*                 erro:
+*                   type: string
+*                   example: "Erro na geração do segredo do TOTP"
+*/
 router.post('/otp',
     passport.authenticate('jwt', { session: false }), 
     async(req,res) => {
