@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon ./app.js",
     "seed": "node ./seed",
-    "test": "jest"
+    "test:unit": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "maildev": "^2.2.1",
+    "mongodb-memory-server": "^10.1.4",
     "nodemon": "^2.0.19"
   }
 }
