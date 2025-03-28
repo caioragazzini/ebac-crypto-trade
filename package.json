@@ -4,10 +4,11 @@
   "description": "Uma aplicação simples, API only, desenvolvida no curso de node JS da ebac (https://ebaconline.com.br/node-js) para simular uma corretora de crypto",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon ./app.js",
+    "start": "node server.js",
+    "dev": "nodemon ./server.js",
     "seed": "node ./seed",
-    "test:unit": "jest"
+    "test:unit": "jest --runInBand",
+    "test:int": "jest --runInBand -c jest.integracao.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +37,7 @@
     "jest": "^29.7.0",
     "maildev": "^2.2.1",
     "mongodb-memory-server": "^10.1.4",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "supertest": "^7.1.0"
   }
 }
