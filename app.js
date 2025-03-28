@@ -4,12 +4,9 @@ const createError = require('http-errors');
 const express = require('express');
 const passport = require('passport');
 
-
 const router = require('./routes');
 
 const app = express();
-
-
 
 // configurando autenticação
 app.use(passport.initialize());
@@ -34,6 +31,5 @@ app.use(function(err, _req, res, _next) {
     erro: err.message,
   });
 });
-
 
 module.exports = app;
