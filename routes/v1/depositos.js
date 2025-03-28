@@ -63,9 +63,7 @@ module.exports = router;
  * /v1/depositos:
  *   get:
  *     description: Retorna a lista de depósitos do usuário
- *     security:
- *       - auth: []
- *          otp: []
+ *    
  *     tags:
  *       - depósitos
  *     responses:
@@ -86,8 +84,8 @@ module.exports = router;
  *   post:
  *     description: Realiza um novo depósito para o usuário
  *     security:
- *       - auth: []
- *         otp: []
+ *       - auth: []  # Corrigido para ter os itens da lista alinhados
+ *       - otp: []   # Corrigido para ter os itens da lista alinhados
  *     tags:
  *       - depósitos
  *     requestBody:
